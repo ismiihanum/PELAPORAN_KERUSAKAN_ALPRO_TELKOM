@@ -25,15 +25,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHolder> {
+public class ValidatorHistoryAdapter extends RecyclerView.Adapter<ValidatorHistoryAdapter.ViewHolder> {
     private Context context;
     private ArrayList<PelaporModel> pelaporModels;
     private ResponseErrorModel responseErrorModels;
     private String idPelapor;
-
-//    private ValidatorActivity validatorActivity;
-
-    public TeknisiAdapter(Context context, ArrayList<PelaporModel> pelaporModels) {
+    public ValidatorHistoryAdapter(Context context, ArrayList<PelaporModel> pelaporModels) {
         this.context = context;
         this.pelaporModels = pelaporModels;
     }
@@ -41,7 +38,7 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_teknisi, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_validator_history, parent, false);
         return new ViewHolder(view);
     }
 
@@ -55,24 +52,7 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
                 .into(holder.ivItemValidator);
         holder.tvDeskValidator.setText(pelaporModels.get(position).getDeskripsi());
         holder.tvAlamatValidator.setText(pelaporModels.get(position).getAlamat());
-
-        holder.btnYa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateStatusValidator(pelaporModels.get(position).getIdPelapor(), "Sedang Dalam Perbaikan");
-                Toast.makeText(context, "Disetujui", Toast.LENGTH_SHORT).show();
-//                validatorActivity.getData();
-            }
-        });
-
-        holder.btnSelesai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateStatusValidator(pelaporModels.get(position).getIdPelapor(), "Sudah Diselesaikan");
-                Toast.makeText(context, "Tidak disetujui", Toast.LENGTH_SHORT).show();
-//                validatorActivity.getData();
-            }
-        });
+        holder.tvAlamatStatus.setText(pelaporModels.get(position).getStatus());
 
     }
 
@@ -82,7 +62,7 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
                 .enqueue(new Callback<ResponseErrorModel>() {
                     @Override
                     public void onResponse(Call<ResponseErrorModel> call, Response<ResponseErrorModel> response) {
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful()){
                             responseErrorModels = response.body();
                             Toast.makeText(context, "" + responseErrorModels.getErrorMsg(), Toast.LENGTH_SHORT).show();
                         }
@@ -104,9 +84,7 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
         private ImageView ivItemValidator;
         private TextView tvDeskValidator;
         private TextView tvAlamatValidator;
-        private Button btnYa;
-        private Button btnTidak;
-        private Button btnSelesai;
+        private TextView tvAlamatStatus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -114,9 +92,7 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
             ivItemValidator = itemView.findViewById(R.id.iv_item_validator);
             tvDeskValidator = itemView.findViewById(R.id.tv_desk_validator);
             tvAlamatValidator = itemView.findViewById(R.id.tv_desk_alamat);
-            btnYa = itemView.findViewById(R.id.btn_ya);
-            btnTidak = itemView.findViewById(R.id.btn_tidak);
-            btnSelesai = itemView.findViewById(R.id.btn_selesai);
+            tvAlamatStatus = itemView.findViewById(R.id.tv_desk_status);
         }
     }
 }

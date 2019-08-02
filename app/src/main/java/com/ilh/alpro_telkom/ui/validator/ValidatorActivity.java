@@ -1,61 +1,30 @@
 package com.ilh.alpro_telkom.ui.validator;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.ilh.alpro_telkom.R;
-import com.ilh.alpro_telkom.adapter.ValidatorAdapter;
-import com.ilh.alpro_telkom.model.PelaporModel;
-import com.ilh.alpro_telkom.rest.ApiConfigServer;
-import com.ilh.alpro_telkom.rest.ApiService;
-
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 public class ValidatorActivity extends AppCompatActivity {
-
-    private RecyclerView rv;
-    private ArrayList<PelaporModel> pelaporModels;
-    private ValidatorAdapter validatorAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_validator);
-        initView();
-        pelaporModels = new ArrayList<>();
-        getData();
-    }
+        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+                ValidatorActivity.this.getSupportFragmentManager(), FragmentPagerItems.with(ValidatorActivity.this)
+                .add("DATA", DataPelaporFragment.class)
+                .add("Histori", HistoryValidatorFragment.class)
+                .create());
 
-    public void getData() {
-        ApiService apiService = ApiConfigServer.getApiService();
-        apiService.getAllData().enqueue(new Callback<ArrayList<PelaporModel>>() {
-            @Override
-            public void onResponse(Call<ArrayList<PelaporModel>> call, Response<ArrayList<PelaporModel>> response) {
-                if (response.isSuccessful()){
-                    pelaporModels = response.body();
-                    rv.setLayoutManager(new LinearLayoutManager(ValidatorActivity.this));
-                    validatorAdapter = new ValidatorAdapter(ValidatorActivity.this, pelaporModels);
-                    validatorAdapter.notifyDataSetChanged();
-                    rv.setAdapter(validatorAdapter);
-                }
-            }
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(adapter);
 
-            @Override
-            public void onFailure(Call<ArrayList<PelaporModel>> call, Throwable t) {
-                Toast.makeText(ValidatorActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void initView() {
-        rv = findViewById(R.id.rv);
+        SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
+        viewPagerTab.setViewPager(viewPager);
     }
 }

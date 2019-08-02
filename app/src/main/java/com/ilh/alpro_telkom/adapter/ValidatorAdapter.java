@@ -31,9 +31,6 @@ public class ValidatorAdapter extends RecyclerView.Adapter<ValidatorAdapter.View
     private ArrayList<PelaporModel> pelaporModels;
     private ResponseErrorModel responseErrorModels;
     private String idPelapor;
-
-//    private ValidatorActivity validatorActivity;
-
     public ValidatorAdapter(Context context, ArrayList<PelaporModel> pelaporModels) {
         this.context = context;
         this.pelaporModels = pelaporModels;
@@ -60,7 +57,7 @@ public class ValidatorAdapter extends RecyclerView.Adapter<ValidatorAdapter.View
         holder.btnYa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateStatusValidator(pelaporModels.get(position).getIdPelapor(),"YA");
+                updateStatusValidator(pelaporModels.get(position).getIdPelapor(),"Disetujui Validator");
                 Toast.makeText(context, "Disetujui", Toast.LENGTH_SHORT).show();
 //                validatorActivity.getData();
             }
@@ -69,7 +66,7 @@ public class ValidatorAdapter extends RecyclerView.Adapter<ValidatorAdapter.View
         holder.btnTidak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateStatusValidator(pelaporModels.get(position).getIdPelapor(),"TIDAK");
+                updateStatusValidator(pelaporModels.get(position).getIdPelapor(),"Ditolak Validator");
                 Toast.makeText(context, "Tidak disetujui", Toast.LENGTH_SHORT).show();
 //                validatorActivity.getData();
             }
@@ -116,13 +113,6 @@ public class ValidatorAdapter extends RecyclerView.Adapter<ValidatorAdapter.View
             tvAlamatValidator = itemView.findViewById(R.id.tv_desk_alamat);
             btnYa = itemView.findViewById(R.id.btn_ya);
             btnTidak = itemView.findViewById(R.id.btn_tidak);
-
-//            btnTidak.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(context, "" + idPelapor, Toast.LENGTH_SHORT).show();
-//                }
-//            });
         }
     }
 }
