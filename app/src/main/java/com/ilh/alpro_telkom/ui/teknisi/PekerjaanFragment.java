@@ -1,8 +1,6 @@
 package com.ilh.alpro_telkom.ui.teknisi;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,11 +14,10 @@ import android.widget.Toast;
 
 import com.ilh.alpro_telkom.R;
 import com.ilh.alpro_telkom.adapter.TeknisiAdapter;
-import com.ilh.alpro_telkom.adapter.ValidatorHistoryAdapter;
-import com.ilh.alpro_telkom.helper.Config;
 import com.ilh.alpro_telkom.model.PelaporModel;
 import com.ilh.alpro_telkom.rest.ApiConfigServer;
 import com.ilh.alpro_telkom.rest.ApiService;
+import com.ilh.alpro_telkom.ui.teknisi.presenter.PekerjaanPresnter;
 
 import java.util.ArrayList;
 
@@ -32,12 +29,15 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class PekerjaanFragment extends Fragment {
+    private PekerjaanPresnter pekerjaanPresnter;
+
     private RecyclerView rv;
     private ArrayList<PelaporModel> pelaporModels;
     private TeknisiAdapter teknisiAdapter;
 
     public PekerjaanFragment() {
         // Required empty public constructor
+        getData();
     }
 
 
@@ -47,7 +47,8 @@ public class PekerjaanFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_pekerjaan, container, false);
         initView(view);
-        getData();
+        pekerjaanPresnter = new PekerjaanPresnter();
+        pekerjaanPresnter.getData(getActivity(), rv);
         return view;
     }
 

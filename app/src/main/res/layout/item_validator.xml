@@ -40,7 +40,7 @@
                 android:background="@color/colorBtn"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"
-                android:text="YA"
+                android:text="DISETUJUI"
                 android:layout_margin="8dp"/>
             <Button
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:background="@color/colorAccent"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"
-                android:text="TIDAK"
+                android:text="DITOLAK"
                 android:layout_margin="8dp"/>
 
         </LinearLayout>

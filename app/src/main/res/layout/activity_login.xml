@@ -25,18 +25,30 @@
                 android:layout_height="300dp"
                 android:src="@drawable/googleg_disabled_color_18"/>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_username"
+                    android:hint="Username"
+                    android:text="validator"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edt_username"
-                android:hint="Username"
-                android:text="validator"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_password"
-                android:hint="Password"
-                android:text="1234"/>
+                app:passwordToggleEnabled="true">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_password"
+                    android:inputType="textPassword"
+                    android:hint="Password"
+                    android:text="1234"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <Button
                 android:layout_width="match_parent"
@@ -45,6 +57,16 @@
                 android:background="@color/colorAccent"
                 android:text="Login"
                 android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Belum punya akun? Daftar sekarang."
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
+                android:id="@+id/tv_register"
+                android:textColor="@android:color/black"/>
 
         </LinearLayout>
 

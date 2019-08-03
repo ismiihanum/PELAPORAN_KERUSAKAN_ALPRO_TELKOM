@@ -58,25 +58,6 @@ public class TeknisiHistoryAdapter extends RecyclerView.Adapter<TeknisiHistoryAd
         holder.tvAlamatStatus.setText(pelaporModels.get(position).getStatus());
     }
 
-    private void updateStatusValidator(String id, String status) {
-        ApiService apiService = ApiConfigServer.getApiService();
-        apiService.updateStatusValidator(id, status)
-                .enqueue(new Callback<ResponseErrorModel>() {
-                    @Override
-                    public void onResponse(Call<ResponseErrorModel> call, Response<ResponseErrorModel> response) {
-                        if (response.isSuccessful()) {
-                            responseErrorModels = response.body();
-                            Toast.makeText(context, "" + responseErrorModels.getErrorMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseErrorModel> call, Throwable t) {
-                        Toast.makeText(context, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
     @Override
     public int getItemCount() {
         return pelaporModels.size();

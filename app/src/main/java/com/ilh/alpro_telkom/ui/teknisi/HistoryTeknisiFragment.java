@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.ilh.alpro_telkom.R;
 import com.ilh.alpro_telkom.adapter.TeknisiAdapter;
+import com.ilh.alpro_telkom.adapter.TeknisiHistoryAdapter;
 import com.ilh.alpro_telkom.helper.Config;
 import com.ilh.alpro_telkom.model.PelaporModel;
 import com.ilh.alpro_telkom.rest.ApiConfigServer;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 public class HistoryTeknisiFragment extends Fragment {
     private RecyclerView rv;
     private ArrayList<PelaporModel> pelaporModels;
-    private TeknisiAdapter teknisiAdapter;
+    private TeknisiHistoryAdapter teknisiAdapter;
 
     private String idUser;
     public HistoryTeknisiFragment() {
@@ -56,13 +57,13 @@ public class HistoryTeknisiFragment extends Fragment {
 
     public void getData() {
         ApiService apiService = ApiConfigServer.getApiService();
-        apiService.getHistory("historiTeknisi", idUser).enqueue(new Callback<ArrayList<PelaporModel>>() {
+        apiService.getHistoryTeknisi("historiTeknisi", idUser).enqueue(new Callback<ArrayList<PelaporModel>>() {
             @Override
             public void onResponse(Call<ArrayList<PelaporModel>> call, Response<ArrayList<PelaporModel>> response) {
                 if (response.isSuccessful()){
                     pelaporModels = response.body();
                     rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    teknisiAdapter = new TeknisiAdapter(getActivity(), pelaporModels);
+                    teknisiAdapter = new TeknisiHistoryAdapter(getActivity(), pelaporModels);
                     teknisiAdapter.notifyDataSetChanged();
                     rv.setAdapter(teknisiAdapter);
                 }

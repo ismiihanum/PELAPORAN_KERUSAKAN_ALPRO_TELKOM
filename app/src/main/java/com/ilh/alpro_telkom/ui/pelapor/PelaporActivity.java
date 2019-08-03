@@ -2,7 +2,9 @@ package com.ilh.alpro_telkom.ui.pelapor;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,11 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ilh.alpro_telkom.R;
+import com.ilh.alpro_telkom.helper.Config;
 import com.ilh.alpro_telkom.model.ResponseErrorModel;
 import com.ilh.alpro_telkom.rest.ApiConfigServer;
 import com.ilh.alpro_telkom.rest.ApiService;
@@ -41,13 +45,15 @@ public class PelaporActivity extends AppCompatActivity {
 
     private static final String TAG = "ILH";
     private ImageView ivImagePealpor;
+    private TextView tvKeluar;
+    private TextView tvUsername;
     private EditText edtDeskripsi;
     private Button btnKirimPelapor;
 
     private String imagePath;
     private String getNameImage;
     private String alamat;
-
+    private String idAkun;
 
     private ProgressDialog p;
 
@@ -56,7 +62,9 @@ public class PelaporActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pelapor);
         initView();
-
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        idAkun = sharedPreferences.getString(Config.SHARED_PREF_ID, "");
+        tvUsername.setText(sharedPreferences.getString(Config.SHARED_PREF_USERNAME, ""));
         ivImagePealpor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +79,7 @@ public class PelaporActivity extends AppCompatActivity {
         btnKirimPelapor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtDeskripsi.getText().toString().isEmpty()){
+                if (edtDeskripsi.getText().toString().isEmpty()) {
                     edtDeskripsi.setError("Isi deskripsi");
                 } else {
                     p = new ProgressDialog(PelaporActivity.this);
@@ -82,7 +90,16 @@ public class PelaporActivity extends AppCompatActivity {
 
             }
         });
+
+        tvKeluar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishAffinity();
+                Config.logout(PelaporActivity.this);
+            }
+        });
     }
+
     private void uploadImage() {
         APIServiceUploadImage s = RetroClientUploadImage.getService();
 
@@ -129,14 +146,14 @@ public class PelaporActivity extends AppCompatActivity {
         ApiService apiService = ApiConfigServer.getApiService();
         apiService.postDataPelapor("http://devlop.can.web.id/uploads/client_profile_images/3/" + getNameImage,
                 edtDeskripsi.getText().toString().trim(),
-                "Dihatimu")
+                "Dihatimu", idAkun)
                 .enqueue(new Callback<ResponseErrorModel>() {
                     @Override
                     public void onResponse(Call<ResponseErrorModel> call, Response<ResponseErrorModel> response) {
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             p.dismiss();
                             Toast.makeText(PelaporActivity.this, "Sukses", Toast.LENGTH_SHORT).show();
-                            edtDeskripsi.setText("http://devlop.can.web.id/uploads/client_profile_images/3/" + getNameImage);
+//                            edtDeskripsi.setText("http://devlop.can.web.id/uploads/client_profile_images/3/" + getNameImage);
                         }
                     }
 
@@ -183,5 +200,7 @@ public class PelaporActivity extends AppCompatActivity {
         ivImagePealpor = findViewById(R.id.iv_image_pealpor);
         edtDeskripsi = findViewById(R.id.edt_deskripsi);
         btnKirimPelapor = findViewById(R.id.btn_kirim_pelapor);
+        tvKeluar = findViewById(R.id.tv_keluar);
+        tvUsername = findViewById(R.id.tv_username);
     }
 }

@@ -18,6 +18,16 @@ public class ResponseErrorModel{
 
 	@SerializedName("username")
 	private String username;
+	@SerializedName("regID")
+	private String regID;
+
+	public String getRegID() {
+		return regID;
+	}
+
+	public void setRegID(String regID) {
+		this.regID = regID;
+	}
 
 	public void setErrorMsg(String errorMsg){
 		this.errorMsg = errorMsg;

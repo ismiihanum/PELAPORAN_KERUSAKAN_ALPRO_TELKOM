@@ -1,13 +1,17 @@
 package com.ilh.alpro_telkom.model;
+
 import com.google.gson.annotations.SerializedName;
 
 public class PelaporModel{
 
+	@SerializedName("id_user_akun")
+	private String idUserAkun;
+
+	@SerializedName("id_user_validator")
+	private String idUserValidator;
+
 	@SerializedName("id_pelapor")
 	private String idPelapor;
-
-	@SerializedName("id_user")
-	private Object idUser;
 
 	@SerializedName("deskripsi")
 	private String deskripsi;
@@ -18,6 +22,9 @@ public class PelaporModel{
 	@SerializedName("judul")
 	private Object judul;
 
+	@SerializedName("id_user_teknisi")
+	private String idUserTeknisi;
+
 	@SerializedName("url_image")
 	private String urlImage;
 
@@ -27,20 +34,28 @@ public class PelaporModel{
 	@SerializedName("status")
 	private String status;
 
+	public void setIdUserAkun(String idUserAkun){
+		this.idUserAkun = idUserAkun;
+	}
+
+	public String getIdUserAkun(){
+		return idUserAkun;
+	}
+
+	public void setIdUserValidator(String idUserValidator){
+		this.idUserValidator = idUserValidator;
+	}
+
+	public String getIdUserValidator(){
+		return idUserValidator;
+	}
+
 	public void setIdPelapor(String idPelapor){
 		this.idPelapor = idPelapor;
 	}
 
 	public String getIdPelapor(){
 		return idPelapor;
-	}
-
-	public void setIdUser(Object idUser){
-		this.idUser = idUser;
-	}
-
-	public Object getIdUser(){
-		return idUser;
 	}
 
 	public void setDeskripsi(String deskripsi){
@@ -65,6 +80,14 @@ public class PelaporModel{
 
 	public Object getJudul(){
 		return judul;
+	}
+
+	public void setIdUserTeknisi(String idUserTeknisi){
+		this.idUserTeknisi = idUserTeknisi;
+	}
+
+	public String getIdUserTeknisi(){
+		return idUserTeknisi;
 	}
 
 	public void setUrlImage(String urlImage){

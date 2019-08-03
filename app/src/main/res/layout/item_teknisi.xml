@@ -51,7 +51,7 @@
                 android:background="@color/colorBtn"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"
-                android:text="YA"
+                android:text="AMBIL"
                 android:layout_margin="8dp"/>
             <Button
                 android:layout_width="match_parent"

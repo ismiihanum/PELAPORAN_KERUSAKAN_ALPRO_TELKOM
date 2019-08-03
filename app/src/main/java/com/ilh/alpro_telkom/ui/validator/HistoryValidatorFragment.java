@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ilh.alpro_telkom.R;
-import com.ilh.alpro_telkom.adapter.ValidatorAdapter;
 import com.ilh.alpro_telkom.adapter.ValidatorHistoryAdapter;
 import com.ilh.alpro_telkom.helper.Config;
 import com.ilh.alpro_telkom.model.PelaporModel;

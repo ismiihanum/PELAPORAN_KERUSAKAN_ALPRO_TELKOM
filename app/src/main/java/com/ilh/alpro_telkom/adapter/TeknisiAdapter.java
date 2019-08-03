@@ -1,6 +1,7 @@
 package com.ilh.alpro_telkom.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ilh.alpro_telkom.R;
+import com.ilh.alpro_telkom.helper.Config;
 import com.ilh.alpro_telkom.model.PelaporModel;
 import com.ilh.alpro_telkom.model.ResponseErrorModel;
 import com.ilh.alpro_telkom.rest.ApiConfigServer;
@@ -27,9 +29,14 @@ import retrofit2.Response;
 
 public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHolder> {
     private Context context;
+
     private ArrayList<PelaporModel> pelaporModels;
     private ResponseErrorModel responseErrorModels;
-    private String idPelapor;
+
+    private String idTeknisi;
+    private String idAkun;
+    private String idValidator;
+    private String status;
 
 //    private ValidatorActivity validatorActivity;
 
@@ -47,7 +54,19 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-//        validatorActivity = new ValidatorActivity();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        idTeknisi = sharedPreferences.getString(Config.SHARED_PREF_ID, "");
+        idAkun = pelaporModels.get(position).getIdUserAkun();
+        idValidator = pelaporModels.get(position).getIdUserValidator();
+        status = pelaporModels.get(position).getStatus();
+        if (status.contains("Sedang Dalam Perbaikan")){
+            holder.btnYa.setVisibility(View.GONE);
+            holder.btnSelesai.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnYa.setVisibility(View.VISIBLE);
+            holder.btnSelesai.setVisibility(View.GONE);
+        }
+
         Glide.with(context)
                 .load(pelaporModels.get(position)
                         .getUrlImage()).error(R.drawable.ic_launcher_background)
@@ -59,38 +78,65 @@ public class TeknisiAdapter extends RecyclerView.Adapter<TeknisiAdapter.ViewHold
         holder.btnYa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateStatusValidator(pelaporModels.get(position).getIdPelapor(), "Sedang Dalam Perbaikan");
+                updateStatusValidator(pelaporModels.get(position).getIdPelapor(), idTeknisi,"Sedang Dalam Perbaikan");
                 Toast.makeText(context, "Disetujui", Toast.LENGTH_SHORT).show();
-//                validatorActivity.getData();
             }
         });
 
         holder.btnSelesai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateStatusValidator(pelaporModels.get(position).getIdPelapor(), "Sudah Diselesaikan");
-                Toast.makeText(context, "Tidak disetujui", Toast.LENGTH_SHORT).show();
-//                validatorActivity.getData();
+                updateStatusValidator(pelaporModels.get(position).getIdPelapor(), idTeknisi, "Sudah Diselesaikan");
+                Toast.makeText(context, "Sudah Diselesaikan", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void updateStatusValidator(String id, String status) {
+    private void updateStatusValidator(String idPelapor, String idTeknisi, final String status) {
         ApiService apiService = ApiConfigServer.getApiService();
-        apiService.updateStatusValidator(id, status)
+        apiService.updateStatusTeknisi(idPelapor, idTeknisi, status)
                 .enqueue(new Callback<ResponseErrorModel>() {
                     @Override
                     public void onResponse(Call<ResponseErrorModel> call, Response<ResponseErrorModel> response) {
                         if (response.isSuccessful()) {
                             responseErrorModels = response.body();
-                            Toast.makeText(context, "" + responseErrorModels.getErrorMsg(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "" + responseErrorModels.getErrorMsg(), Toast.LENGTH_SHORT).show();
+
+                            if (status.contains("Sedang Dalam Perbaikan")){
+                                getRegID(idValidator, "Mulai pengerjaan oleh teknisi", "Segera di tindaklanjuti oleh Teknisi.");
+                            } else if (status.contains("Sudah Diselesaikan")){
+                                getRegID(idAkun,"Sudah dilakukan pengerjaan", "Selesai diperbaiki.");
+                            }
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseErrorModel> call, Throwable t) {
                         Toast.makeText(context, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void getRegID(String idAkun, final String tittle, final String message) {
+        ApiService apiService = ApiConfigServer.getApiService();
+        apiService.getRegID("getTokenRegID", idAkun)
+                .enqueue(new Callback<ResponseErrorModel>() {
+                    @Override
+                    public void onResponse(Call<ResponseErrorModel> call, Response<ResponseErrorModel> response) {
+                        if (response.isSuccessful()){
+                            responseErrorModels = response.body();
+                            Toast.makeText(context, "Mengirim notifikasi", Toast.LENGTH_SHORT).show();
+                            Config.pushNotif(context, tittle, message, "individual"
+                                    ,responseErrorModels.getRegID());
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseErrorModel> call, Throwable t) {
+                        Toast.makeText(context, "getRegID: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
