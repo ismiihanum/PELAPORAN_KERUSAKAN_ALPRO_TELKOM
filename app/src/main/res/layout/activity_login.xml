@@ -3,70 +3,104 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="600dp"
     android:layout_gravity="center"
     android:gravity="center"
+    android:background="@drawable/d"
     android:orientation="vertical"
     tools:context=".LoginActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SELAMAT DATANG"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:textSize="30dp"
+        android:textColor="#FF007F">
+
+    </TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TelkomApps"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:textSize="20dp"
+        android:textColor="#FF007F">
+
+    </TextView>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:src="@drawable/googleg_disabled_color_18"/>
+                android:layout_height="140dp"
+                android:src="@drawable/telkom" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
+                    android:id="@+id/edt_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/edt_username"
                     android:hint="Username"
-                    android:text="validator"/>
+                    android:text="validator" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:passwordToggleEnabled="true">
+
                 <EditText
+                    android:id="@+id/edt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/edt_password"
-                    android:inputType="textPassword"
                     android:hint="Password"
-                    android:text="1234"/>
+                    android:inputType="textPassword"
+                    android:text="1234" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_login"
                 android:background="@color/colorAccent"
                 android:text="Login"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/tv_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Belum punya akun? Daftar sekarang."
-                android:gravity="center"
                 android:layout_marginTop="8dp"
-                android:textSize="18dp"
-                android:id="@+id/tv_register"
-                android:textColor="@android:color/black"/>
+                android:gravity="center"
+                android:text="Belum punya akun? Daftar sekarang."
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
         </LinearLayout>
 
